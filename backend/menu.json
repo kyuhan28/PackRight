@@ -1,0 +1,16 @@
+{
+  "items": [
+    { "id": "burger", "name": "Burger", "station": "Grill",
+      "looks_like": "a deck of playing cards or a small rectangular box" },
+    { "id": "fries", "name": "Fries", "station": "Fryer",
+      "looks_like": "a closed, solid, elongated pencil case" },
+    { "id": "drink", "name": "Drink", "station": "Drinks",
+      "looks_like": "a tall cylindrical water bottle" },
+    { "id": "cookie", "name": "Cookie", "station": "Bakery",
+      "looks_like": "a brightly colored square pad of sticky notes" }
+  ],
+  "combos": [
+    { "id": "burger_combo", "name": "Burger Combo",
+      "items": { "burger": 1, "fries": 1, "drink": 1 } }
+  ]
+}
