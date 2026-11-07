@@ -1,0 +1,8 @@
+.kdf { position: relative; display: flex; min-height: 560px; width: 100%; align-items: center; justify-content: center; overflow: hidden; background: #fff; color: #18181b; }
+html.dark .kdf { background: #09090b; color: #f4f4f5; }
+.kdf__layer { pointer-events: none; position: absolute; inset: 0; }
+.kdf__canvas { display: block; width: 100%; height: 100%; opacity: 0; transition: opacity 500ms ease-out; }
+.kdf__default { position: relative; display: flex; max-width: 36rem; flex-direction: column; align-items: center; gap: 1rem; padding: 0 1.5rem; text-align: center; }
+.kdf__default-title { margin: 0; font-weight: 600; font-size: 2.25rem; letter-spacing: -0.025em; }
+.kdf__default-text { margin: 0; max-width: 24rem; font-size: 1rem; color: #71717a; }
+html.dark .kdf__default-text { color: #a1a1aa; }

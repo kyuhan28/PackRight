@@ -47,8 +47,10 @@ def tray_prompt(items):
         "Look at this overhead photo of a packing tray in a restaurant.\n"
         f"Count only these items:\n{wanted}\n"
         "Ignore anything else, like pens, keys, cables, hands, or the table.\n"
+        "If a paper slip with an order number like #12 is on the tray, put that number in "
+        '"slip". Otherwise use null.\n'
         "Answer with JSON only, exactly like this, replacing the zeros with counts:\n"
-        f'{{"counts": {{{shape}}}, "note": "one short sentence about what you see"}}'
+        f'{{"counts": {{{shape}}}, "slip": null, "note": "one short sentence about what you see"}}'
     )
 
 
@@ -67,11 +69,14 @@ def read_counts(text, items):
         if type(n) is not int or n < 0:
             raise AIError(f"The AI gave a strange count for {item['name']}. Try again.")
         counts[item["id"]] = n
-    return counts, str(data.get("note", ""))
+    slip = data.get("slip")
+    if type(slip) is not int or slip <= 0:
+        slip = None  # anything odd counts as "no slip seen"
+    return counts, slip, str(data.get("note", ""))
 
 
 def look_at_tray(image_data_url, items):
-    """Returns (counts, note). The image is not stored anywhere."""
+    """Returns (counts, slip_number_or_None, note). The image is not stored anywhere."""
     message = ask_openrouter({
         "model": os.environ.get("OPENROUTER_MODEL"),
         "reasoning": {"effort": "low"},  # counting needs little thinking
