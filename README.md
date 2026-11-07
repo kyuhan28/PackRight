@@ -57,24 +57,6 @@ In short: **the AI sees and decides; the code verifies.**
 **Driver**
 - Ready orders with an item checklist and a 4-character confirmation code
 
-## Accuracy
-
-Measured with the built-in accuracy test mode on *[number]* test trays
-(single items, full orders, duplicates, clutter, touching items, and a bare
-white table):
-
-| Metric | Result |
-|---|---|
-| Tray accuracy (every count right) | *[ ]%* |
-| Precision | *[ ]%* |
-| Recall | *[ ]%* |
-| Average time per check | *[ ] s* |
-| Phantom items (could cause a false green) | *[ ]* |
-
-**Why precision matters most:** a missed item causes a false red, which a
-worker fixes or overrides. An imagined item can cause a false green, which
-sends a wrong order out.
-
 ## Tech stack
 
 | Layer | Technology |
