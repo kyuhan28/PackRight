@@ -687,6 +687,32 @@ def eval_reset():
     return jsonify(ok=True)
 
 
+# ---------- pickup board and demo reset ----------
+
+@app.get("/api/board")
+def board():
+    """Public pickup screen: order numbers only, nothing personal."""
+    rows = db().execute(
+        "SELECT id, status FROM orders WHERE status IN ('pending', 'ready') ORDER BY id"
+    ).fetchall()
+    return jsonify(
+        packing=[r["id"] for r in rows if r["status"] == "pending"],
+        ready=[r["id"] for r in rows if r["status"] == "ready"],
+    )
+
+
+@app.post("/api/demo/reset")
+@role_required("staff")
+def demo_reset():
+    """Clear orders and everything about them, so each demo starts at #1.
+    Accounts and accuracy-test results stay."""
+    conn = db()
+    for table in ("order_items", "checks", "notices", "handoffs", "station_requests", "sold_out", "orders"):
+        conn.execute(f"DELETE FROM {table}")
+    conn.commit()
+    return jsonify(ok=True)
+
+
 if __name__ == "__main__":
     setup_database()
     print("PackRight database ready. Demo accounts: customer, staff, driver")

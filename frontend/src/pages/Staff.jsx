@@ -21,6 +21,7 @@ export default function Staff({ user, onLogout }) {
   const [queue, setQueue] = useState({ waiting: [], ready: [] });
   const [requests, setRequests] = useState([]);
   const [stats, setStats] = useState(null);
+  const [printing, setPrinting] = useState(null); // the order whose slip is printing
   const [reason, setReason] = useState("");
   const [testing, setTesting] = useState(false); // accuracy test mode
   const [sound, setSound] = useState(true);
@@ -95,6 +96,26 @@ export default function Staff({ user, onLogout }) {
     return () => { window.removeEventListener("keydown", down); window.removeEventListener("keyup", up); };
   }, []);
 
+  // Print one slip: render it, open the print dialog, then clear it.
+  useEffect(() => {
+    if (!printing) return undefined;
+    const done = () => setPrinting(null);
+    window.addEventListener("afterprint", done, { once: true });
+    const t = setTimeout(() => window.print(), 60);
+    return () => { clearTimeout(t); window.removeEventListener("afterprint", done); };
+  }, [printing]);
+
+  async function resetDemo() {
+    if (!window.confirm("Clear every order, check and sold-out mark so the demo starts again at #1? Accounts and accuracy test results stay.")) return;
+    try {
+      await api("/api/demo/reset", {});
+      setResult(null);
+      await refresh();
+    } catch (e) {
+      setError(e.message);
+    }
+  }
+
   async function override() {
     try {
       await api(`/api/orders/${result.order_id}/override`, { reason });
@@ -152,6 +173,7 @@ export default function Staff({ user, onLogout }) {
             <label><input type="checkbox" checked={sound} onChange={(e) => setSound(e.target.checked)} /> Sound and voice</label>
             <label><input type="checkbox" checked={dark} onChange={(e) => setDark(e.target.checked)} /> Dark screen</label>
             <label><input type="checkbox" checked={testing} onChange={(e) => { setTesting(e.target.checked); setResult(null); }} /> Accuracy test mode</label>
+            <button className="link reset-demo" onClick={resetDemo}>Reset demo</button>
             <span className="muted">Press Space to {testing ? "test" : "check"}</span>
           </div>
         </section>
@@ -234,7 +256,10 @@ export default function Staff({ user, onLogout }) {
                     return <li key={id} className={out ? "is-crossed" : ""}><b>{n}</b> <span aria-hidden>{iconOf(id)}</span> {name(id)}{out && " (sold out)"}</li>;
                   })}
                 </ul>
-                <p className="slip__label">Bag label: <strong>#{o.id} {o.pickup_code}</strong> <span className="muted">(write it on a slip, put it on the tray)</span></p>
+                <p className="slip__label">
+                  Bag label: <strong>#{o.id} {o.pickup_code}</strong>
+                  <button className="btn btn--small slip__print" onClick={() => setPrinting(o)}>Print slip</button>
+                </p>
               </article>
               );
             })}
@@ -282,6 +307,16 @@ export default function Staff({ user, onLogout }) {
           </>)}
         </aside>
       </main>
+      {printing && (
+        <div className="print-slip" aria-hidden>
+          <p className="print-slip__brand">PackRight</p>
+          <p className="print-slip__num">#{printing.id}</p>
+          <p className="print-slip__code">Bag code <b>{printing.pickup_code}</b></p>
+          <ul className="print-slip__items">
+            {Object.entries(printing.items).map(([id, n]) => <li key={id}>{n} × {name(id)}</li>)}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

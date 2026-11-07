@@ -37,7 +37,6 @@ export default function Login({ onLogin }) {
           </label>
           {error && <p className="error">{error}</p>}
           <button className="btn btn--dark btn--big">Sign in</button>
-          <p className="login__demo">Demo accounts: <b>customer</b> and <b>staff</b> (the password is the same as the name)</p>
         </form>
       </main>
     </DotField>

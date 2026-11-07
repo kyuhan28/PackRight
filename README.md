@@ -31,6 +31,10 @@ In short: **the AI sees and decides; the code verifies.**
 
 ## Features
 
+- **Pickup board:** open `/board` (or `?board`) on a screen by the counter. It shows order numbers only, in "Being packed" and "Ready for pickup", and needs no login.
+- **Print slip:** each waiting order has a Print slip button that prints its number large, with the bag code and items, for the tray.
+- **Reset demo:** staff can clear all orders, checks and sold-out marks so a demo starts again at #1. Accounts and accuracy test results are kept.
+
 **Staff packing station**
 - Live camera with a tray guide; red result appears beside the camera so the
   tray stays visible; green flash with a "Ready" stamp

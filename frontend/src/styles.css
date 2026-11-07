@@ -237,7 +237,6 @@ input:focus, select:focus { outline: none; border-color: var(--focus); box-shado
 .login__card { width: min(100%, 24rem); padding: 2rem 2rem 1.6rem; gap: 1rem; box-shadow: 0 2px 4px rgba(22, 30, 39, 0.06), 0 24px 60px rgba(22, 30, 39, 0.18); }
 .login__brand { display: flex; align-items: center; gap: 0.7rem; }
 .login__tag { margin: -0.3rem 0 0.4rem; color: var(--muted); font-size: 1.05rem; }
-.login__demo { margin: 0.2rem 0 0; font-size: 0.85rem; color: var(--muted); text-align: center; }
 
 /* customer: Kokonut's Flow Field drifting quietly behind the cards */
 .shell--customer { position: relative; isolation: isolate; }
@@ -372,3 +371,41 @@ input:focus, select:focus { outline: none; border-color: var(--focus); box-shado
 .theme-dark .camera__pick { background: rgba(25, 33, 42, 0.92); color: var(--ink); }
 .theme-dark .btn--in { background: var(--paper); color: var(--ink); }
 .theme-dark .topbar .btn--small { color: var(--ink); }
+
+/* ---------- pickup board: the screen above the counter ---------- */
+.board { min-height: 100vh; display: flex; flex-direction: column; background: #0f1418; color: #eef2f5; padding: clamp(1rem, 3vw, 2.5rem); }
+.board__top { display: flex; justify-content: space-between; align-items: center; margin-bottom: clamp(1rem, 3vw, 2rem); }
+.board__brand { font-size: clamp(1.6rem, 3vw, 2.4rem); }
+.board__brand .mark rect, .board__brand .mark path:first-of-type { fill: #eef2f5; stroke: #eef2f5; }
+.board__clock { font: 800 clamp(1.6rem, 3vw, 2.4rem) var(--display); color: #9aa7b3; font-variant-numeric: tabular-nums; }
+.board__cols { flex: 1; display: grid; grid-template-columns: 1fr 1.4fr; gap: clamp(1rem, 3vw, 2.5rem); }
+.board__col { background: #172028; border-radius: 18px; padding: clamp(1rem, 2.5vw, 2rem); }
+.board__col--ready { background: linear-gradient(160deg, #0f3d27, #0b2e1d); box-shadow: inset 0 0 0 2px #1f8a52; }
+.board__head { font: 800 clamp(1.5rem, 3vw, 2.6rem)/1 var(--display); margin: 0 0 clamp(0.8rem, 2vw, 1.5rem); text-transform: uppercase; letter-spacing: 0.04em; color: #9aa7b3; }
+.board__col--ready .board__head { color: #7ee2a8; }
+.board__nums { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: clamp(0.5rem, 1.5vw, 1rem); }
+.board__num {
+  min-width: 2.2ch; text-align: center; padding: 0.1em 0.35em; border-radius: 12px; background: #222d37;
+  font: 800 clamp(2.6rem, 6vw, 5.5rem)/1 var(--display); font-variant-numeric: tabular-nums;
+}
+.board__num--ready { background: #22c55e; color: #052e16; animation: board-in 520ms cubic-bezier(0.2, 1.4, 0.4, 1) both; }
+@keyframes board-in { from { transform: scale(0.6); opacity: 0; } }
+.board__empty { margin: 0; color: #6f7d89; font-size: clamp(1rem, 1.6vw, 1.3rem); }
+.board__offline { position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%); margin: 0; padding: 0.4rem 1rem; border-radius: 999px; background: #c42a20; color: #fff; font-weight: 700; }
+@media (max-width: 700px) { .board__cols { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .board__num--ready { animation: none; } }
+
+/* ---------- print slip, and the staff extras ---------- */
+.slip__label { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.6rem; }
+.slip__print { margin-left: auto; }
+.reset-demo { margin-left: 0; }
+.print-slip { display: none; }
+@media print {
+  body * { visibility: hidden !important; }
+  .print-slip, .print-slip * { visibility: visible !important; }
+  .print-slip { display: block; position: fixed; inset: 0; padding: 1.5cm; color: #000; background: #fff; text-align: center; font-family: var(--body); }
+  .print-slip__brand { margin: 0; font: 800 18pt var(--display); }
+  .print-slip__num { margin: 0.2cm 0; font: 800 120pt/1 var(--display); }
+  .print-slip__code { margin: 0 0 0.4cm; font-size: 16pt; }
+  .print-slip__items { list-style: none; margin: 0; padding: 0; font-size: 14pt; }
+}
